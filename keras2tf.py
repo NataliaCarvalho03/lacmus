@@ -40,6 +40,20 @@ def freeze_session(session, keep_var_names=None, output_names=None, clear_device
             session, input_graph_def, output_names, freeze_var_names)
         return frozen_graph
 
+def printTensors(pb_file):
+
+    # read pb into graph_def
+    with tf.gfile.GFile(pb_file, "rb") as f:
+        graph_def = tf.GraphDef()
+        graph_def.ParseFromString(f.read())
+
+    # import graph_def
+    with tf.Graph().as_default() as graph:
+        tf.import_graph_def(graph_def)
+
+    # print operations
+    for op in graph.get_operations():
+        print(op.name)
 
 def main(args=None):
     K.set_learning_phase(0)
@@ -54,6 +68,7 @@ def main(args=None):
     model = models.load_model(weights_name, backbone_name=backbone)
     frozen_graph = freeze_session(K.get_session(), output_names=[out.op.name for out in model.outputs])
     tf.train.write_graph(frozen_graph, dirname, f'{fn}.pb', as_text=False)
+    printTensors(os.path.join(dirname, f'{fn}.pb'))
     print(f'weights saved: {dirname}')
 
 

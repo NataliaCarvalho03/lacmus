@@ -98,7 +98,7 @@ def filter_detections(
     pad_size = keras.backend.maximum(0, max_detections - keras.backend.shape(scores)[0])
     boxes    = backend.pad(boxes, [[0, pad_size], [0, 0]])
     scores   = backend.pad(scores, [[0, pad_size]])
-    labels   = backend.pad(labels, [[0, pad_size]], constant_values=-1)
+    labels   = backend.pad(labels, [[0, pad_size]])
     labels   = keras.backend.cast(labels, 'int32')
     other_   = [backend.pad(o, [[0, pad_size]] + [[0, 0] for _ in range(1, len(o.shape))]) for o in other_]
 

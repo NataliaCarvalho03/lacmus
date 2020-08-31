@@ -3,7 +3,7 @@ import keras
 # import keras_retinanet
 import tensorflow as tf
 import keras_retinanet
-from keras_retinanet import models
+from keras_retinanet import models, losses
 from keras_retinanet.utils.image import read_image_bgr, preprocess_image, resize_image, compute_resize_scale
 from keras_retinanet.utils.visualization import draw_box, draw_caption
 from keras_retinanet.utils.colors import label_color
@@ -50,6 +50,12 @@ def parse_args(args):
         help='use gpu',
         action='store_true',
         required=False,
+    )
+    parser.add_argument(
+        '--out',
+        help='save output',
+        type=str,
+        required=False
     )
     return parser.parse_args(args)
 
@@ -181,6 +187,9 @@ def main(args=None):
         print(f'\tbox: {b[0]} {b[1]} {b[2]} {b[3]}')
         objects_count = objects_count + 1
     print(f'found objects: {objects_count}')
+
+    if args.out:
+        model.save(args.out)
 
 
 if __name__ == '__main__':
