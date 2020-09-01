@@ -89,6 +89,14 @@ def scatter_nd(*args, **kwargs):
 def gather_nd(*args, **kwargs):
     """ See https://www.tensorflow.org/api_docs/python/tf/gather_nd .
     """
+    try:
+        #tf.gather_nd(
+        #    params, indices, batch_dims=0, name=None
+        #)
+        #indices.shape[-1] <= params.rank
+        print(f'indices.shape[-1]: {args[1].shape[-1]} <= params.rank: {args[0]._rank()} and shape {args[0].shape}')
+    except Exception as e:
+        print(e)
     return tensorflow.gather_nd(*args, **kwargs)
 
 
